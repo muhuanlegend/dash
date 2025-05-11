@@ -11,5 +11,8 @@ export default defineConfig({
       "5173-muhuanlegend-dash-pztbznc7qdh.ws-eu118.gitpod.io",
       "5174-muhuanlegend-dash-pztbznc7qdh.ws-eu118.gitpod.io"
     ]
+  },
+  ssr: {
+    noExternal: [/@syncfusion/]
   }
 });
