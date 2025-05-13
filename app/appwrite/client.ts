@@ -6,7 +6,7 @@ export const appwriteConfig = {
   apikey: import.meta.env.VITE_APPWRITE_API_KEY,
   databaseId: import.meta.env.VITE_DATABASE_ID,
   userCollectionId: import.meta.env.VITE_APPWRITE_USERS_COLLECTION_ID,
-  tripCollectionId: import.meta.env.VVITE_APPWRITE_TRIPS_COLLECTION_ID,
+  tripCollectionId: import.meta.env.VITE_APPWRITE_TRIPS_COLLECTION_ID,
 };
 
 const client = new Client()
