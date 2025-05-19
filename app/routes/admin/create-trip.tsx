@@ -12,6 +12,7 @@ import { useState } from "react";
 import { world_map } from "~/constants/world_map";
 import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
 import { account } from "~/appwrite/client";
+import { useNavigate } from "react-router";
 
 export const loader = async () => {
   const response = await fetch("https://restcountries.com/v3.1/all");
@@ -27,6 +28,7 @@ export const loader = async () => {
 };
 
 const CreateTrip = ({ loaderData }: Route.ComponentProps) => {
+  const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -84,11 +86,28 @@ const CreateTrip = ({ loaderData }: Route.ComponentProps) => {
     }
 
     try {
-      console.log('user', user)
+      const response = await fetch("/api/create-trip", {
+        method: "POST",
+        headers: { "content-Type": "application/json" },
+        body: JSON.stringify({
+          country: formData.country,
+          numberofDays: formData.duration,
+          travelStyle: formData.travelStyle,
+          interests: formData.interest,
+          budget: formData.budget,
+          groupType: formData.groupType,
+          userId: user.$id,
+        }),
+      });
+
+      const result: CreateTripResponse = await response.json();
+
+      if (result?.id) navigate(`/trips/${result.id}`);
+      else console.error("Failed to generate trip");
     } catch (error) {
-      console.error('Error generating trip', error)
+      console.error("Error generating trip", error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   };
   const handleChange = (key: keyof TripFormData, value: string | number) => {
