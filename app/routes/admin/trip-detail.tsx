@@ -14,20 +14,24 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 
   if (!tripId) throw new Error("Trip Id is required");
 
-  const trip = await getTripById(tripId);
-  const trips = await getAllTrips(4, 0);
+  const [trip, trips] = await Promise.all([
+    getTripById(tripId),
+    getAllTrips(4, 0)
+  ])
+
+
 
   return {
     trip,
-    allTrips: trips.allTrips.map(({ $id, tripDetails, imageUrls }) => ({
+    allTrips: trips.allTrips.map(({ $id, tripDetail, imageUrls }) => ({
       id: $id,
-      ...parseTripData(tripDetails),
+      ...parseTripData(tripDetail),
       imageUrls: imageUrls ?? [],
     })),
   };
 };
 const TripDetail = ({ loaderData }: Route.ComponentProps) => {
-  console.log(loaderData);
+ 
   const imageUrls = loaderData?.trip?.imageUrls || [];
   const tripData = parseTripData(loaderData?.trip?.tripDetail);
 
@@ -76,7 +80,7 @@ const TripDetail = ({ loaderData }: Route.ComponentProps) => {
     },
   ];
 
-  const allTrips = loaderData?.allTrips as Trip[] | [];
+  const allTrips = loaderData.allTrips as Trip[] | [];
 
   return (
     <main className="travel-detail wrapper">
@@ -203,7 +207,9 @@ const TripDetail = ({ loaderData }: Route.ComponentProps) => {
           </section>
         ))}
 
-        <section className="flex flex-col gap-6">
+        
+      </section>
+      <section className="flex flex-col gap-6">
           <h2 className="p-24-semibold text-dark-100">Popular trips</h2>
           <div className="trip-grid">
             {allTrips.map(
@@ -229,7 +235,6 @@ const TripDetail = ({ loaderData }: Route.ComponentProps) => {
             )}
           </div>
         </section>
-      </section>
     </main>
   );
 };
