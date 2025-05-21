@@ -110,9 +110,9 @@ const CreateTrip = ({ loaderData }: Route.ComponentProps) => {
       setLoading(false);
     }
   };
-  const handleChange = (key: keyof TripFormData, value: string | number) => {
-    setFormData({ ...formData, [key]: value });
-  };
+  const handleChange = (key: keyof TripFormData, value: string | number)  => {
+    setFormData({ ...formData, [key]: value})
+    }
 
   return (
     <main className="flex flex-col gap-10 pb-20 wrapper">
@@ -161,7 +161,7 @@ const CreateTrip = ({ loaderData }: Route.ComponentProps) => {
               name="duration"
               placeholder="Enter the number of days to spend during trip"
               className="form-input placeholder:text-gray-100 "
-              onChange={(e) => handleChange("duration", Number(e.target.value))}
+              onChange={(e) => handleChange('duration', Number(e.target.value))}
             />
           </div>
 
